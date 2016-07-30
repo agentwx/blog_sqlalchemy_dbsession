@@ -59,7 +59,7 @@ Exemple complet pour la gestion des sessions avec Flask
 
 Voici un petit exemple pour démontrer l'ensemble de cette approche (app.py).
 
-NOTE: Le code source est également disponible sur GitHub.
+NOTE: Le code source est également disponible sur [GitHub](https://github.com/jprimeau/blog_sqlalchemy_dbsession).
 
 ```python
 from contextlib import contextmanager
