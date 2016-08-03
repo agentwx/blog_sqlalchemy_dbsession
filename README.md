@@ -1,3 +1,8 @@
+title: Session SQLAlchemy dans une web app d'envergure
+date: 2016/8/1 9:50:00
+categories:
+- SQLAlchemy
+---
 Session SQLAlchemy dans une web app d'envergure
 ===============================================
 
@@ -11,14 +16,14 @@ Bref, le but de cet article est de montrer comment bien utiliser une session SQL
 Le cycle de vie d'une session dans une web app
 ----------------------------------------------
 
-Une bonne pratique est d'isoler la gestion du cycle de vie d'une session de la portion qui accède et manipule les données. Il est aussi important de comprendre quand débute et se termine la session. Dans le monde du développement d'applications web, celà veut dire que la session est crée au début de la requête et fermée à la fin de celle-ci.
+Une bonne pratique est d'isoler la gestion du cycle de vie d'une session de la portion qui accède et manipule les données. Il est aussi important de comprendre quand débute et se termine la session. Dans le monde du développement d'applications web, cela veut dire que la session est créée au début de la requête et fermée à la fin de celle-ci.
 
-SQLAlchemy offre l'objet [scoped_session](http://docs.sqlalchemy.org/en/rel_1_0/orm/contextual.html#sqlalchemy.orm.scoping.scoped_session) qui représente un régistraire d'objets de session inspiré par le <i>[registry pattern](http://martinfowler.com/eaaCatalog/registry.html)</i>.
+SQLAlchemy offre l'objet [scoped_session](http://docs.sqlalchemy.org/en/rel_1_0/orm/contextual.html#sqlalchemy.orm.scoping.scoped_session) qui représente un registraire d'objets de session inspiré par le <i>[registry pattern](http://martinfowler.com/eaaCatalog/registry.html)</i>.
 
 Passons à la pratique!
 ----------------------
 
-Voici comment je procède, généralement, pour gérer les sessions/transactions dans les applications web que je développe. Évidemment, il s'agit d'une façon de procéder parmis plusieurs.
+Voici comment je procède, généralement, pour gérer les sessions/transactions dans les applications web que je développe. Évidemment, il s'agit d'une façon de procéder parmi plusieurs.
 
 La première étape est commune à toute approche et il s'agit de créer l'engin de base de données. Dans ce cas-ci, je me contente d'utiliser SQLite en mémoire.
 ```python
@@ -52,7 +57,7 @@ def get_item(id):
         result = jsonify(ser_item)
         return result
 ```
-L'implémentation de la fonction session_scope() permet d'attraper les exceptions et de procéder à un rollback afin d'invalider la transaction. Par exemple, dans l'exemple précédent, il y aurait un rollback de la transaction si la ressource item n'est pas trouvée (404). Bon d'accord, il s'agit d'une opération de lecture dans ce cas-ci, mais le principe demeurerait le même pour une exception lors de la création d'une ressource, comme par exemple un conflit sur l'intégrité.
+L'implémentation de la fonction session_scope() permet d'attraper les exceptions et de procéder à un rollback afin d'invalider la transaction. Par exemple, dans le code précédent, il y aurait un rollback de la transaction si la ressource item n'est pas trouvée (404). Bon d'accord, il s'agit d'une opération de lecture dans ce cas-ci, mais le principe demeurerait le même pour une exception lors de la création d'une ressource, par exemple un conflit sur l'intégrité.
 
 Exemple complet pour la gestion des sessions avec Flask
 -------------------------------------------------------
@@ -173,7 +178,7 @@ Server: Werkzeug/0.11.10 Python/2.7.12
 }
 ```
 
-Dans l'appel précédent, la liste d'item est vide car nous n'avons pas créer de ressource. Pour créer une ressource Item, il suffit de faire un POST comme ceci:
+Dans l'appel précédent, la liste d'items est vide, car nous n'avons pas créé de ressource. Pour créer une ressource Item, il suffit de faire un POST comme ceci:
 ```bash
 $ http POST http://localhost:5000/ name='Item #1'
 HTTP/1.0 200 OK
